@@ -2,9 +2,9 @@ name: Flutter CI (test_ci_cd)
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build-android:
@@ -18,20 +18,14 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.32.2'
+          flutter-version: "3.32.2"
 
-      # Install dependency
-      - name: Install dependencies
-        run: flutter pub get
-
-      # Jalankan test
-      - name: Run Flutter tests
-        run: flutter test
-
-      # Build APK
-      - name: Build APK (Android)
-        run: flutter build apk --release
-
-      # Build AppBundle
-      - name: Build AppBundle (Android)
-        run: flutter build appbundle --release
+      - run: flutter pub get
+      - run: flutter test
+      - run: flutter build apk
+      - run: flutter build appbundle
+      - name: Upload apk success build
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
